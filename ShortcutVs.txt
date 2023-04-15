@@ -1,0 +1,13 @@
+1 ------------  DUPLICATE LINE
+
+SHIT + ALT + FLECHE
+
+
+2 ----------------- DELETE ENTIRE LINE
+
+CTRL + SHIFT + K
+
+
+4 ---------------- SELECT NEXT INSTANCE
+
+CTRL + D

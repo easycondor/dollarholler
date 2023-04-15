@@ -11,3 +11,13 @@ CTRL + SHIFT + K
 4 ---------------- SELECT NEXT INSTANCE
 
 CTRL + D
+
+
+5 ------------------ HTMTAGWRAP
+
+ALT + wght
+
+
+6 ------------------ SELECT MULTIPLE
+
+SHIFT + ALT + FLECHES

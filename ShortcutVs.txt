@@ -15,7 +15,7 @@ CTRL + D
 
 5 ------------------ HTMTAGWRAP
 
-ALT + wght
+ALT + W
 
 
 6 ------------------ SELECT MULTIPLE

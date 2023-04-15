@@ -40,6 +40,7 @@ export default {
       },
       gridTemplateColumns: {
         invoiceTable: '100px 100px 60px 1fr 116px 32px 32px',
+        invoiceTableMobile: '1fr 90px',
       },
       zIndex: {
         navBarToggle: 91,

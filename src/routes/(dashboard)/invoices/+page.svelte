@@ -7,6 +7,7 @@
   import { centsToDollars, sumInvoices } from '$lib/utils/moneyHelpers';
   import BlankState from './BlankState.svelte';
   import InvoiceRowHeader from './InvoiceRowHeader.svelte';
+  import Button from '$lib/components/Button.svelte';
 
   onMount(() => {
     loadInvoices();
@@ -29,12 +30,7 @@
   {/if}
 
   <!-- NEW INVOICE BUTTON  -->
-  <div>
-    <button
-      class="relative whitespace-normal rounded-lg bg-lavenderIndigo px-5 lg:px-10 py-2 lg:py-3 font-sansSerif text-base lg:text-xl font-black text-white shadow-colored hover:shadow-coloredHover translate-y-0 hover:-translate-y-2"
-      >+Invoice</button
-    >
-  </div>
+  <Button label="+Invoice" onClick={() => {}} />
 </div>
 
 <!-- LIST OF INVOICES  -->

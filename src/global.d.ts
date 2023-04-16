@@ -3,6 +3,7 @@ interface Invoice {
     client: Client
     createAt: string
     dueDate: string
+    id: string
     invoiceNumber: string
     invoiceStatus: InvoiceStatus
     issueDate: string

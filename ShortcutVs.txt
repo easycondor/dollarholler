@@ -21,3 +21,13 @@ ALT + W
 6 ------------------ SELECT MULTIPLE
 
 SHIFT + ALT + FLECHES
+
+
+7 --------------------- MOVE UP/DOWN LINE
+
+ALT + FLECHE
+
+
+8 -------------------- PUT LIST ALPHA ORDER
+
+CTRL + SHIFT + A

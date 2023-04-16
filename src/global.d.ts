@@ -14,7 +14,7 @@ interface Invoice {
 
 interface Client {
     city: string
-    clientStatus: CllientStatus
+    clientStatus?: CllientStatus
     email: string
     id: string
     name: string

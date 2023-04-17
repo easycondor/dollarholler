@@ -31,3 +31,7 @@ ALT + FLECHE
 8 -------------------- PUT LIST ALPHA ORDER
 
 CTRL + SHIFT + A
+
+9 ------------------- SEARCH A FIEL
+
+CTRL + P

@@ -8,6 +8,10 @@
   import BlankState from './BlankState.svelte';
   import InvoiceRowHeader from './InvoiceRowHeader.svelte';
   import Button from '$lib/components/Button.svelte';
+  import SlidePanel from '$lib/components/SlidePanel.svelte';
+  import InvoiceForm from './InvoiceForm.svelte';
+
+  let isInvoiceFormShowing: boolean = false;
 
   onMount(() => {
     loadInvoices();
@@ -30,7 +34,12 @@
   {/if}
 
   <!-- NEW INVOICE BUTTON  -->
-  <Button label="+Invoice" onClick={() => {}} />
+  <Button
+    label="+Invoice"
+    onClick={() => {
+      isInvoiceFormShowing = true;
+    }}
+  />
 </div>
 
 <!-- LIST OF INVOICES  -->
@@ -52,3 +61,14 @@
     <CircleAmount label="Total" amount={`$${centsToDollars(sumInvoices($invoices))}`} />
   {/if}
 </div>
+
+<!-- SlidePanel -->
+{#if isInvoiceFormShowing}
+  <SlidePanel
+    on:closPanel={() => {
+      isInvoiceFormShowing = false;
+    }}
+  >
+    <InvoiceForm />
+  </SlidePanel>
+{/if}

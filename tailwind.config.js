@@ -14,6 +14,10 @@ export default {
         circle: "url('/images/circle.svg')",
         arrowRightUp: "url('/images/arrow-right-up.svg')",
         arrowLeftUp: "url('/images/arrow-left-up.svg')",
+        chevronDown: "url('/images/chevron-down.svg')",
+      },
+      backgroundPosition: {
+        'right-center': '97% center'
       },
       borderWidth: {
         '1': '1px',
@@ -22,6 +26,7 @@ export default {
         colored: '0px 7px 16px rgba(127, 91, 220, 0.002)',
         coloredHover: '0px 16px 25px rgba(127, 91, 220, 0.3)',
         tableRow: '0px 0px 6px rgba(0, 0, 0, 0.16)',
+        slidePanel: '-4px 0px 44px rgba(0,0,0,0.25)',
       },
       colors: {
         blueGem: '#3813a0',
@@ -44,10 +49,12 @@ export default {
       gridTemplateColumns: {
         invoiceTable: '100px 100px 60px 1fr 116px 32px 32px',
         invoiceTableMobile: '1fr 90px',
+        'invoiceLineItem': '1fr 100px 100px 100px 65px',
       },
       zIndex: {
         modal: 999,
-        overlay: 998,
+        slidePanel: 998,
+        overlay: 997,
         navBarToggle: 91,
         navBar: 90,
     }

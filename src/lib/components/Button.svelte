@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SvelteComponent } from 'svelte';
+  import type { SvelteComponent } from 'svelte';
   export let label: string;
   export let onClick: () => void;
 
@@ -20,7 +20,7 @@
 <div>
   <button
     on:click|preventDefault={() => onClick()}
-    class="flex items-center relative whitespace-normal rounded-lg px-5 lg:px-10 py-2 lg:py-3 font-sansSerif text-base lg:text-xl font-black"
+    class="button"
     class:isAnimated
     class:primary={style === 'primary'}
     class:secondary={style === 'secondary'}
@@ -57,7 +57,7 @@
   }
 
   .outline {
-    @apply border-daisyBush hover:bg-daisyBush hover:text-white;
+    @apply border-daisyBush text-daisyBush hover:bg-daisyBush hover:text-white;
   }
 
   .textOnly {

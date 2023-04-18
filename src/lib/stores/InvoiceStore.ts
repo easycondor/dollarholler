@@ -15,3 +15,10 @@ export const deleteInvoice = (invoiceToDelete: Invoice) => {
      return newList;
    })
 }
+
+export const addInvoice = (invoiceToAdd: Invoice) => {
+   //Create an Array ici prev / clone le tableau store / fusionne le nouvel arrary invoiceToAdd
+   invoices.update((prev: Invoice[]) =>[...prev, invoiceToAdd])
+   return invoiceToAdd;
+}
+

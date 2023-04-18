@@ -1,8 +1,9 @@
 
 
 //IMPORT DATE-FNS FOR HELP
-import { isBefore } from 'date-fns';
+import { isBefore, format } from 'date-fns';
 
+export const today = format(new Date, 'yyyy-MM-dd')
 /**
  * THIS TAKES A DATE YYYY-MM-DD AND RETURN M-D-YYYY
  * @PARM {STRING} MYDATE

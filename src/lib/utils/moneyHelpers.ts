@@ -25,3 +25,7 @@ export const sumInvoices = (invoices: Invoice[] | undefined): number => {
     }, 0)
 }
 
+export const dollarsToCents = (dollars: number): number => {
+    return dollars * 100;
+}
+

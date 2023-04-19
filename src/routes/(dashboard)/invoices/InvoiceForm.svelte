@@ -8,7 +8,8 @@
   import { states } from '$lib/utils/states';
   import { onMount } from 'svelte';
   import { today } from '$lib/utils/dateHelpers';
-  import { addInvoice } from '$lib/stores/InvoiceStore';
+  import { addInvoice, updateInvoice } from '$lib/stores/InvoiceStore';
+  import ConfirmDelete from '$lib/components/ConfirmDelete.svelte';
 
   const blankLineItem = {
     id: uuidv4(),
@@ -21,13 +22,17 @@
 
   let isNewClient: boolean = false;
 
+  let isModalShowing: boolean = false;
+
   //Zarbi oui, il s'agit d'une fonction vide
   export let closePanel: () => void = () => {};
 
-  let invoice: Invoice = {
+  export let invoice: Invoice = {
     client: {} as Client,
     lineItems: [{ ...blankLineItem }] as LineItem[]
   } as Invoice; //pas de besoin de donner les autres args d'invoice
+
+  export let formState: 'create' | 'edit' = 'create';
 
   //partial si tout les arguments ne sont pas présent reconnait comme un type client
   let newClient: Partial<Client> = {};
@@ -54,7 +59,11 @@
       addNewClient(newClient as Client);
     }
     //console.log({ invoice, newClient }); //return the neme + object
-    addInvoice(invoice);
+    if (formState === 'create') {
+      addInvoice(invoice);
+    } else {
+      updateInvoice(invoice);
+    }
     closePanel();
   };
 
@@ -64,7 +73,14 @@
   });
 </script>
 
-<h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">Add an Invoice</h2>
+<h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">
+  {#if formState === 'create'}
+    Add
+  {:else}
+    Edit
+  {/if}
+  an Invoice
+</h2>
 
 <form class="grid grid-cols-6 gap-x-5" on:submit|preventDefault={handleSubmit}>
   <!-- Client -->
@@ -214,15 +230,19 @@
   <!-- button -->
   <div class="field col-span-2">
     <!-- only be visible if editing -->
-    <Button
-      label="Delete"
-      style="textOnlyDestructive"
-      isAnimated={false}
-      onClick={() => {}}
-      iconLeft={Trash}
-    >
-      Delete
-    </Button>
+    {#if formState === 'edit'}
+      <Button
+        label="Delete"
+        style="textOnlyDestructive"
+        isAnimated={false}
+        onClick={() => {
+          isModalShowing = true;
+        }}
+        iconLeft={Trash}
+      >
+        Delete
+      </Button>
+    {/if}
   </div>
   <div class="field col-span-4 flex justify-end gap-x-5">
     <Button
@@ -239,3 +259,12 @@
     >
   </div>
 </form>
+
+<ConfirmDelete
+  {invoice}
+  {isModalShowing}
+  on:close={() => {
+    isModalShowing = false;
+    closePanel();
+  }}
+/>

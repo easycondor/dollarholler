@@ -8,9 +8,9 @@
   import Send from '$lib/components/icons/Send.svelte';
   import Trash from '$lib/components/icons/Trash.svelte';
   import Edit from '$lib/components/icons/Edit.svelte';
-  import Modal from '$lib/components/Modal.svelte';
-  import Button from '$lib/components/Button.svelte';
-  import { deleteInvoice } from '$lib/stores/InvoiceStore';
+  import SlidePanel from '$lib/components/SlidePanel.svelte';
+  import InvoiceForm from './InvoiceForm.svelte';
+  import ConfirmDelete from '$lib/components/ConfirmDelete.svelte';
 
   export let invoice: Invoice;
 
@@ -20,6 +20,8 @@
 
   let isModalShowing: boolean = false;
 
+  let isInvoiceFormShowing: boolean = false;
+
   const handleDelete = () => {
     //console.log('delete');
     isModalShowing = true;
@@ -28,6 +30,8 @@
 
   const handleEdit = () => {
     console.log('Edit');
+    isInvoiceFormShowing = true;
+    isAdditionalMenuShowing = false;
   };
 
   const handleSendInvoice = () => {
@@ -84,34 +88,18 @@
   </div>
 </div>
 
-<Modal isVisible={isModalShowing} on:close={() => (isModalShowing = false)}>
-  <div class="flex flex-col justify-between items-center gap-6 h-full min-h-[175px]">
-    <div class="text-center text-xl font-bold text-daisyBush">
-      Are you sure you want to delete this invoice
-      <span class="text-scarlet">{invoice.client.name}</span>
-      for <span class="text-scarlet">${centsToDollars(sumLineItems(invoice.lineItems))}</span> ?
-    </div>
-    <div class="flex gap-4">
-      <Button
-        isAnimated={false}
-        style={'secondary'}
-        label="Cancel"
-        onClick={() => {
-          isModalShowing = false;
-        }}
-      />
-      <Button
-        isAnimated={false}
-        style={'destructive'}
-        label="Delete It"
-        onClick={() => {
-          isModalShowing = false;
-          deleteInvoice(invoice);
-        }}
-      />
-    </div>
-  </div>
-</Modal>
+<!-- Confirm Modal -->
+<ConfirmDelete {invoice} {isModalShowing} on:close={() => (isModalShowing = false)} />
+<!-- SlidePanel -->
+{#if isInvoiceFormShowing}
+  <SlidePanel
+    on:closPanel={() => {
+      isInvoiceFormShowing = false;
+    }}
+  >
+    <InvoiceForm {invoice} formState="edit" closePanel={() => (isInvoiceFormShowing = false)} />
+  </SlidePanel>
+{/if}
 
 <style lang="postcss">
   .invoice-row {

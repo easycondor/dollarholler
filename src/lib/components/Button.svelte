@@ -2,6 +2,7 @@
   import type { SvelteComponent } from 'svelte';
   export let label: string;
   export let onClick: () => void;
+  export let className: string = '';
 
   export let style:
     | 'primary'
@@ -22,7 +23,7 @@
 <div>
   <button
     on:click|preventDefault={() => onClick()}
-    class="button"
+    class={`button ${className}`}
     class:isAnimated
     class:primary={style === 'primary'}
     class:secondary={style === 'secondary'}

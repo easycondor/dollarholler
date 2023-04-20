@@ -35,3 +35,7 @@ CTRL + SHIFT + A
 9 ------------------- SEARCH A FIEL
 
 CTRL + P
+
+10 ------------------- CHAGE Quotes
+
+CTRL + é

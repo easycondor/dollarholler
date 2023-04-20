@@ -4,9 +4,13 @@
   import LineItemRows from '../LineItemRows.svelte';
   import { loadSettings, settings } from '$lib/stores/SettingsStore';
   import { onMount } from 'svelte';
+  import SvelteMarkdown from 'svelte-markdown';
+  import { page } from '$app/stores';
 
   export let data: { invoice: Invoice };
   //console.log({ data });
+
+  let copyLinkLabel = 'Copy Link';
 
   onMount(() => {
     loadSettings();
@@ -14,11 +18,18 @@
   });
 
   const printInvoice = () => {
-    console.log('print invoice');
+    //console.log('print invoice');
+    window.print();
   };
 
   const copyLink = () => {
-    console.log('copy link');
+    //console.log('copy link');
+    navigator.clipboard.writeText($page.url.href);
+    copyLinkLabel = 'Copied!';
+
+    setTimeout(() => {
+      copyLinkLabel = 'Copy Link';
+    }, 1250);
   };
 
   const payInvoice = () => {
@@ -40,7 +51,12 @@
       isAnimated={false}
       onClick={printInvoice}
     />
-    <Button height="short" label="Copy Link" onClick={copyLink} />
+    <Button
+      height="short"
+      label={copyLinkLabel}
+      onClick={copyLink}
+      className="min-w-[168px] justify-center"
+    />
     <Button height="short" label="Send" onClick={sendIvoice} />
     <Button height="short" label="Pay Invoice" onClick={payInvoice} />
   </div>
@@ -115,14 +131,14 @@
   {#if data.invoice.notes}
     <div class="col-span-6">
       <div class="label">Note</div>
-      <p>{data.invoice.notes}</p>
+      <SvelteMarkdown source={data.invoice.notes} />
     </div>
   {/if}
 
   {#if data.invoice.terms}
     <div class="col-span-6">
       <div class="label">Terms</div>
-      <p>{data.invoice.terms}</p>
+      <SvelteMarkdown source={data.invoice.terms} />
     </div>
   {/if}
 </div>

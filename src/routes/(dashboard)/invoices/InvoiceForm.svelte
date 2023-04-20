@@ -10,6 +10,7 @@
   import { today } from '$lib/utils/dateHelpers';
   import { addInvoice, updateInvoice } from '$lib/stores/InvoiceStore';
   import ConfirmDelete from '$lib/components/ConfirmDelete.svelte';
+  import { snackbar } from '$lib/stores/SnackbarStore';
 
   const blankLineItem = {
     id: uuidv4(),
@@ -67,8 +68,16 @@
     //console.log({ invoice, newClient }); //return the neme + object
     if (formState === 'create') {
       addInvoice(invoice);
+      snackbar.send({
+        message: 'Your invoice is created with success',
+        type: 'success'
+      });
     } else {
       updateInvoice(invoice);
+      snackbar.send({
+        message: 'Your invoice is updated with success',
+        type: 'success'
+      });
     }
     closePanel();
   };

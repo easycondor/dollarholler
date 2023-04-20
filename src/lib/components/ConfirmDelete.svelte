@@ -4,6 +4,7 @@
   import { deleteInvoice } from '$lib/stores/InvoiceStore';
   import { centsToDollars, sumLineItems } from '$lib/utils/moneyHelpers';
   import { createEventDispatcher } from 'svelte';
+  import { snackbar } from '$lib/stores/SnackbarStore';
 
   const dispatch = createEventDispatcher();
 
@@ -36,6 +37,10 @@
         onClick={() => {
           dispatch('close');
           deleteInvoice(invoice);
+          snackbar.send({
+            message: 'Your invoice was sucessfully deleted',
+            type: 'success'
+          });
         }}
       />
     </div>

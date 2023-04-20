@@ -52,6 +52,7 @@ export default {
         'invoiceLineItem': '1fr 100px 100px 100px 65px',
       },
       zIndex: {
+        toaster:1000,
         modal: 999,
         modalOverlay: 998,
         slidePanel: 997,

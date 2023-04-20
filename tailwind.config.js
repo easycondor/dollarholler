@@ -15,6 +15,7 @@ export default {
         arrowRightUp: "url('/images/arrow-right-up.svg')",
         arrowLeftUp: "url('/images/arrow-left-up.svg')",
         chevronDown: "url('/images/chevron-down.svg')",
+        thankYou: "url('/images/bg-thankYou.svg')"
       },
       backgroundPosition: {
         'right-center': '97% center'

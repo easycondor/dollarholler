@@ -27,6 +27,7 @@ export default {
         coloredHover: '0px 16px 25px rgba(127, 91, 220, 0.3)',
         tableRow: '0px 0px 6px rgba(0, 0, 0, 0.16)',
         slidePanel: '-4px 0px 44px rgba(0,0,0,0.25)',
+        invoice: '-4px 0px 44px rgba(0, 0, 0, 0.25)'
       },
       colors: {
         blueGem: '#3813a0',

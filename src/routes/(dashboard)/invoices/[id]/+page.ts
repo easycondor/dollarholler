@@ -14,7 +14,7 @@ export function load( {params} ):Props{
     const id = params?.id;
     //
     const invoice = getInvoiceById(id);
-    console.log({invoice});
+    // console.log({invoice});
     
-    return invoice;
+    return {invoice};
 }

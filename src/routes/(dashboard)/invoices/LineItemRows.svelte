@@ -3,7 +3,12 @@
   import LineItemRow from './LineItemRow.svelte';
   import Button from '$lib/components/Button.svelte';
   import CircleAmount from '$lib/components/CircleAmount.svelte';
-  import { centsToDollars, sumLineItems, twoDecimals } from '$lib/utils/moneyHelpers';
+  import {
+    centsToDollars,
+    sumLineItems,
+    twoDecimals,
+    addThousandsSeparator
+  } from '$lib/utils/moneyHelpers';
 
   export let lineItems: LineItem[] | undefined = undefined;
 
@@ -12,6 +17,8 @@
   let dispatch = createEventDispatcher();
 
   export let discount: number = 0;
+
+  export let isEditable: Boolean = true;
 
   let discountedAmount: string = '0.00';
 
@@ -26,7 +33,10 @@
     discountedAmount = centsToDollars(sumLineItems(lineItems) * (discount / 100));
   }
 
-  $: total = twoDecimals(Number(subtotal) - Number(discountedAmount));
+  $: {
+    const plainSubtotal = subtotal.replace(',', '');
+    total = addThousandsSeparator(twoDecimals(Number(plainSubtotal) - Number(discountedAmount)));
+  }
 </script>
 
 <div class="invoice-line-item border-b-2 border-daisyBush pb-2">
@@ -44,20 +54,23 @@
       canDelete={index > 0}
       on:uptadeLineItem
       isRequired={index === 0}
+      {isEditable}
     />
   {/each}
 {/if}
 
 <div class="invoice-line-item">
   <div class="sm:col-span-2 col-span-1">
-    <Button
-      label="+ Line Item"
-      style="textOnlyDestructive"
-      onClick={() => {
-        dispatch('addLineItem');
-      }}
-      isAnimated={false}
-    />
+    {#if isEditable}
+      <Button
+        label="+ Line Item"
+        style="textOnlyDestructive"
+        onClick={() => {
+          dispatch('addLineItem');
+        }}
+        isAnimated={false}
+      />
+    {/if}
   </div>
   <div class="font-bold py-5 text-right text-monsoon">Subtotal</div>
   <div class="py-5 text-right font-mono">${subtotal}</div>
@@ -72,6 +85,7 @@
       name="discount"
       min="0"
       max="100"
+      disabled={!isEditable}
       bind:value={discount}
       on:change={() => {
         dispatch('updateDiscount', { discount });

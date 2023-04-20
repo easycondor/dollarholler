@@ -44,3 +44,8 @@ export const dollarsToCents = (dollars: number): number => {
     return dollars * 100;
 }
 
+export const CentsToDollarsWithoutCommas = (cents:number) => {
+    const dollars = cents / 100;
+    return twoDecimals(dollars);
+}
+

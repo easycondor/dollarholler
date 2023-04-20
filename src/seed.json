@@ -182,5 +182,14 @@
       ],
       "subject": "Website"
     }
-  ]
+  ],
+  "settings": 
+    {
+    "city": "Lau",
+    "email": "s.fave@gmai.com",
+    "myName": "s FAVRE",
+    "state": "CA",
+    "street": "23 rue du gor",
+    "zip": "56789" 
+  }
 }

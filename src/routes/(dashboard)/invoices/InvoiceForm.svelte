@@ -32,6 +32,8 @@
     lineItems: [{ ...blankLineItem }] as LineItem[]
   } as Invoice; //pas de besoin de donner les autres args d'invoice
 
+  const initialDiscount = invoice.discount || 0;
+
   export let formState: 'create' | 'edit' = 'create';
 
   //partial si tout les arguments ne sont pas présent reconnait comme un type client
@@ -50,6 +52,10 @@
   //Assure that svelte uptade the data on live
   const UpdateLineItem = () => {
     invoice.lineItems = invoice.lineItems;
+  };
+
+  const UpdateDiscount = (event: CustomEvent) => {
+    invoice.discount = event.detail.discount;
   };
 
   const handleSubmit = () => {
@@ -84,12 +90,13 @@
 
 <form class="grid grid-cols-6 gap-x-5" on:submit|preventDefault={handleSubmit}>
   <!-- Client -->
-  <div class="field col-span-4">
+  <div class="field col-span-6 md:col-span-4">
     {#if !isNewClient}
       <!-- pas new client -->
       <label for="client">Client</label>
-      <div class="flex items-end gap-x-5">
+      <div class="flex items-end gap-x-2 md:gap-x-5 flex-wrap sm:flex-nowrap">
         <select
+          class="mb-2 sm:mb-0"
           name="client"
           id="client"
           required={!isNewClient}
@@ -104,7 +111,7 @@
             <option value={client.id}>{client.name}</option>
           {/each}
         </select>
-        <div class="text-base font-bold text-monsoon leading-[-3.5rem]">or</div>
+        <div class="text-base font-bold text-monsoon leading-[2.25rem] lg:leading-[3.5rem]">or</div>
         <Button
           label="+Client"
           onClick={() => {
@@ -119,9 +126,15 @@
     {:else}
       <!-- new client -->
       <label for="NewClient">New Client</label>
-      <div class="flex items-end gap-x-5">
-        <input type="text" name="NewClient" required={isNewClient} bind:value={newClient.name} />
-        <div class="text-base font-bold text-monsoon leading-[-3.5rem]">or</div>
+      <div class="flex items-end gap-x-2 md:gap-x-5 flex-wrap sm:flex-nowrap">
+        <input
+          type="text"
+          name="NewClient"
+          required={isNewClient}
+          bind:value={newClient.name}
+          class="mb-2 sm:mb-0"
+        />
+        <div class="text-base font-bold text-monsoon leading-[2.25rem] lg:leading-[3.5rem]">or</div>
         <Button
           label="Existing_Client"
           onClick={() => {
@@ -136,7 +149,7 @@
   </div>
 
   <!-- invoice id -->
-  <div class="field col-span-2">
+  <div class="field col-span-6 md:col-span-2 row-start-1 md:row-start-auto">
     <label for="id">Invoice Is</label>
     <input type="number" name="invoiceNumber" required bind:value={invoice.invoiceNumber} />
   </div>
@@ -182,13 +195,13 @@
     </div>
   {/if}
   <!-- due date -->
-  <div class="filed col-span-2">
+  <div class="filed col-span-3 md:col-span-2">
     <label for="dueDate">Due Date</label>
     <input type="date" name="dueDate" min={today} required bind:value={invoice.dueDate} />
   </div>
 
   <!-- issue date -->
-  <div class="field col-span-2 col-start-5">
+  <div class="field col-span-3 md:col-span-2 md:col-start-5">
     <label for="issueDate">Issue Date</label>
     <input type="date" name="issueDate" min={today} bind:value={invoice.issueDate} />
   </div>
@@ -207,6 +220,7 @@
       on:addLineItem={AddLineItem}
       on:removeLineItem={RemoveLineItem}
       on:uptadeLineItem={UpdateLineItem}
+      on:updateDiscount={UpdateDiscount}
     />
   </div>
 

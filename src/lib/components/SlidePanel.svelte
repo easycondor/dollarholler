@@ -10,7 +10,7 @@
 <svelte:window
   on:keydown={(event) => {
     if (event.key === 'Escape') {
-      dispatch('closePanel');
+      dispatch('close');
     }
   }}
 />
@@ -18,7 +18,7 @@
 <Portal>
   <Overlay />
   <div
-    class="bg-white overflow-scroll fixed w-3/4 h-screen py-20 px-32 right-0 top-0 z-slidePanel shadow-slidePanel"
+    class="bg-white overflow-scroll fixed w-full lg:w-3/4 h-screen pt-16 px-5 lg:py-20 lg:px-32 right-0 top-0 z-slidePanel shadow-slidePanel"
   >
     <button
       on:click={() => dispatch('closPanel')}

@@ -3,6 +3,21 @@ export const sumLineItems = (lineItems: LineItem[] | undefined): number => {
   return lineItems.reduce((prevValue, curValue) => prevValue + curValue.amount, 0)
 }
 
+/**
+ * Takes the lineItems and discount and determine the invoice Total
+ * @param lineItems 
+ * @param disount 
+ * @returns 
+ */
+export const invoiceTotal = (lineItems: LineItem[] | undefined, disount: number | undefined):number => {
+    const LineItemSum = sumLineItems(lineItems)
+    if(disount){
+        const invoiceDiscount = LineItemSum * (disount / 100);
+        return LineItemSum - invoiceDiscount;
+    }
+    return LineItemSum;
+}
+
 export const centsToDollars = (cents: number): string => {
     const dollars = cents / 100;
     const addDecimals = twoDecimals(dollars);

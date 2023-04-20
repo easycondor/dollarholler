@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import Trash from '$lib/components/icons/Trash.svelte';
-  import { twoDecimals, dollarsToCents } from '$lib/utils/moneyHelpers';
+  import { twoDecimals, dollarsToCents, centsToDollars } from '$lib/utils/moneyHelpers';
 
   export let lineItem: LineItem;
 
@@ -11,9 +11,9 @@
 
   let dispatch = createEventDispatcher();
 
-  let unitPrice: string = twoDecimals(lineItem.amount / lineItem.quantity);
-  //let amount: string = twoDecimals(lineItem.amount);
-  let amount: string = twoDecimals(lineItem.amount);
+  let unitPrice: string = centsToDollars(lineItem.amount / lineItem.quantity);
+  //let amount: string = centsToDollars(lineItem.amount);
+  let amount: string = centsToDollars(lineItem.amount);
 
   $: {
     amount = twoDecimals(lineItem.quantity * Number(unitPrice));
@@ -21,8 +21,9 @@
   }
 </script>
 
-<div class="invoice-line-item border-b-2 border-fog py-2">
-  <div>
+<div class="invoice-line-item border-b-2 border-fog py-4 sm:py-2">
+  <div class="description">
+    <label for="description" class="line-item-label">Description</label>
     <input
       class="line-item"
       type="text"
@@ -31,7 +32,8 @@
       required={isRequired}
     />
   </div>
-  <div>
+  <div class="unitPrice">
+    <label for="unitPrice" class="line-item-label text-right">Unit Price</label>
     <input
       class="line-item text-right"
       type="number"
@@ -46,7 +48,8 @@
       required={isRequired}
     />
   </div>
-  <div>
+  <div class="qty">
+    <label for="quantity" class="line-item-label text-center">Quantity</label>
     <input
       class="line-item text-center"
       type="number"
@@ -58,7 +61,8 @@
       required={isRequired}
     />
   </div>
-  <div>
+  <div class="amount">
+    <label for="amount" class="line-item-label text-right">Amount</label>
     <input
       class="line-item text-right"
       type="number"
@@ -69,7 +73,7 @@
       disabled
     />
   </div>
-  <div>
+  <div class="trash">
     {#if canDelete}
       <button
         on:click|preventDefault={() => {
@@ -105,5 +109,9 @@
   input[type='number']:disabled,
   input[type='text']:disabled {
     @apply border-b-0 bg-transparent px-0;
+  }
+
+  .line-item-label {
+    @apply block sm:hidden;
   }
 </style>

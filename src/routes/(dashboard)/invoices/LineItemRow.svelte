@@ -121,6 +121,6 @@
   }
 
   .line-item-label {
-    @apply block sm:hidden;
+    @apply block sm:hidden print:hidden;
   }
 </style>

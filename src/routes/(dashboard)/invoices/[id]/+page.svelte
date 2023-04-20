@@ -14,16 +14,13 @@
 
   onMount(() => {
     loadSettings();
-    //console.log($settings);
   });
 
   const printInvoice = () => {
-    //console.log('print invoice');
     window.print();
   };
 
   const copyLink = () => {
-    //console.log('copy link');
     navigator.clipboard.writeText($page.url.href);
     copyLinkLabel = 'Copied!';
 
@@ -41,9 +38,11 @@
   };
 </script>
 
-<div class="fixed z-0 mb-16 flex justify-between w-full max-w-screen-lg">
+<div
+  class="fixed z-0 mb-16 flex flex-col md:flex-row gap-y-5 px-4 lg:px-0 justify-between w-full max-w-screen-lg print:hidden"
+>
   <h1 class="text-3xl font-bold text-daisyBush">Invoice</h1>
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
     <Button
       height="short"
       label="print"
@@ -55,7 +54,7 @@
       height="short"
       label={copyLinkLabel}
       onClick={copyLink}
-      className="min-w-[168px] justify-center"
+      className="min-w-[100px] sm:min-w-[168px] justify-center"
     />
     <Button height="short" label="Send" onClick={sendIvoice} />
     <Button height="short" label="Pay Invoice" onClick={payInvoice} />
@@ -63,16 +62,16 @@
 </div>
 
 <div
-  class="top-32 relative z-10 grid grid-cols-6 gap-x-5 gap-y-8 bg-white py-16 px-32 shadow-invoice"
+  class="top-32 relative z-10 grid grid-cols-6 gap-x-5 gap-y-8 bg-white py-8 px-5 md:py-16 md:px-32 shadow-invoice print:py-0 print:shadow-none print:top-0"
 >
-  <div class="col-span-3">
+  <div class="sm:col-span-3 col-span-6 print:col-span-3">
     <img
       src="/images/logo.png"
       srcset="/images/logo@2x.png 2x, /images/logo.png 1x"
       alt="fncompany"
     />
   </div>
-  <div class="col-span-2 col-start-5 pt-4">
+  <div class="col-span-6 sm:col-span-2 sm:col-start-5 pt-4">
     <!-- issue load asyn so waiting response -->
     {#if $settings && $settings.myName}
       <div class="label">From</div>
@@ -89,7 +88,7 @@
     {/if}
   </div>
 
-  <div class="col-span-3">
+  <div class="col-span-6 sm:col-span-3 print:col-span-3">
     <div class="label">Bill To:</div>
     <p>
       <strong>{data.invoice.client.name}</strong> <br />
@@ -99,7 +98,7 @@
     </p>
   </div>
 
-  <div class="col-span-2 col-start-5">
+  <div class="col-span-6 sm:col-span-2 sm:col-start-5">
     <div class="label">Invoice id</div>
     <p>{data.invoice.invoiceNumber}</p>
   </div>
@@ -109,7 +108,7 @@
     <p>{convertDate(data.invoice.dueDate)}</p>
   </div>
 
-  <div class="col-span-2 col-start-5">
+  <div class="col-span-3 sm:col-span-2 sm:col-start-5">
     <div class="label">Issue Date</div>
     <p>{convertDate(data.invoice.issueDate)}</p>
   </div>

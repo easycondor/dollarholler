@@ -8,6 +8,12 @@ export const loadClients = () => {
 }
 
 export const addNewClient = (clientToAdd: Client) => {
-    clients.update((prev: Client[]) => [...prev, clientToAdd]);
+    //{...clientToAdd, clientStatus: "active"} => loop all the prop and add par défaut active
+    clients.update((prev: Client[]) => [...prev, {...clientToAdd, clientStatus: "active"}]);
     return clientToAdd;
+ }
+
+ export const updateClient = (clientToUpdate:Client) => {
+    clients.update((prev: Client[]) => prev.map((cur:Client)=>cur.id === clientToUpdate.id ? clientToUpdate : cur));
+    return clientToUpdate;
  }

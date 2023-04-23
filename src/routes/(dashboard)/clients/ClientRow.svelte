@@ -8,12 +8,25 @@
   import Archive from '$lib/components/icons/Archive.svelte';
   import Activate from '$lib/components/icons/Activate.svelte';
   import { centsToDollars, sumInvoices } from '$lib/utils/moneyHelpers';
+  import SlidePanel from '$lib/components/SlidePanel.svelte';
+  import ClientForm from './ClientForm.svelte';
 
   export let client: Client;
 
   console.log(client);
 
   let isAdditionalMenuShowing: boolean = false;
+
+  let isClientFormShowing = false;
+
+  const closePanel = () => {
+    isClientFormShowing = false;
+  };
+
+  const handleEditing = () => {
+    isClientFormShowing = true;
+    isAdditionalMenuShowing = false;
+  };
 
   const receivedInvoices = () => {
     if (client?.invoices) {
@@ -64,7 +77,7 @@
     {#if isAdditionalMenuShowing}
       <AdditionalOptions
         options={[
-          { label: 'Edit', icon: Edit, onClick: () => console.log('edtiing'), disabled: false },
+          { label: 'Edit', icon: Edit, onClick: handleEditing, disabled: false },
           {
             label: 'Archive',
             icon: Archive,
@@ -75,7 +88,7 @@
             disabled: client.clientStatus === 'archive'
           },
           {
-            label: 'Deletet',
+            label: 'Delete',
             icon: Trash,
             onClick: () => console.log('deleting'),
             disabled: false
@@ -94,6 +107,17 @@
     {/if}
   </div>
 </div>
+
+<!-- SlidePanel -->
+{#if isClientFormShowing}
+  <SlidePanel
+    on:closPanel={() => {
+      closePanel();
+    }}
+  >
+    <ClientForm {closePanel} formStatus="edit" {client} />
+  </SlidePanel>
+{/if}
 
 <style lang="postcss">
   .client-row {

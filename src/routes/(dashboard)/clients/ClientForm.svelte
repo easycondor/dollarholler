@@ -1,9 +1,10 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
   import { states } from '$lib/utils/states';
-  import { addNewClient } from '$lib/stores/ClientStore';
+  import { addNewClient, updateClient } from '$lib/stores/ClientStore';
   import Trash from '$lib/components/icons/Trash.svelte';
   import Check from '$lib/components/icons/Check.svelte';
+  import { snackbar } from '$lib/stores/SnackbarStore';
 
   //Obkect client
   export let client: Client = {} as Client;
@@ -11,15 +12,38 @@
   //Zarbi oui, il s'agit d'une fonction vide
   export let closePanel: () => void = () => {};
 
+  //manage edit create
+  export let formStatus: 'create' | 'edit' = 'create';
+
   //Save button 0> submit => update store from ClientStore
   const handleSubmit = () => {
     //console.log({ client });//log the contenu de l'objet bind ave les champs
-    addNewClient(client);
+    if (formStatus === 'create') {
+      addNewClient(client);
+      snackbar.send({
+        message: 'Your client was successfully created',
+        type: 'success'
+      });
+    } else {
+      updateClient(client);
+      snackbar.send({
+        message: 'Your client was successfully updated',
+        type: 'success'
+      });
+    }
+
     closePanel();
   };
 </script>
 
-<h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">Add a Client</h2>
+<h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">
+  {#if formStatus === 'create'}
+    Add
+  {:else}
+    Edit
+  {/if}
+  a Client
+</h2>
 
 <form class="gird grid-col-6 gap-x-5" on:submit|preventDefault={handleSubmit}>
   <!-- Client name -->

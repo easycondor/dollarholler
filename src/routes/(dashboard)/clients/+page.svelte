@@ -5,6 +5,15 @@
   import ClientRowHeader from './ClientRowHeader.svelte';
   import { clients, loadClients } from '$lib/stores/ClientStore';
   import { onMount } from 'svelte';
+  import BlankState from '../clients/BlankState.svelte';
+  import ClientForm from './ClientForm.svelte';
+  import SlidePanel from '$lib/components/SlidePanel.svelte';
+
+  let isClientFormShowing: boolean = false;
+
+  const closePanel = () => {
+    isClientFormShowing = false;
+  };
 
   onMount(() => {
     loadClients();
@@ -18,7 +27,11 @@
 >
   <!-- SEARCH FIEL  -->
   <!-- {#if $invoices.length > 0} -->
-  <Search />
+  {#if $clients.length > 0}
+    <Search />
+  {:else}
+    <div />
+  {/if}
   <!-- {:else} -->
   <div />
   <!-- {/if} -->
@@ -27,7 +40,7 @@
   <Button
     label="+Client"
     onClick={() => {
-      //   isInvoiceFormShowing = true;
+      isClientFormShowing = true;
     }}
   />
 </div>
@@ -35,8 +48,7 @@
 <!-- Client -->
 <div>
   {#if $clients === null}
-    <!-- content here -->
-    loading...
+    <BlankState />
   {:else}
     <!-- client header -->
     <ClientRowHeader />
@@ -48,3 +60,14 @@
     </div>
   {/if}
 </div>
+
+<!-- SlidePanel -->
+{#if isClientFormShowing}
+  <SlidePanel
+    on:closPanel={() => {
+      closePanel();
+    }}
+  >
+    <ClientForm {closePanel} />
+  </SlidePanel>
+{/if}

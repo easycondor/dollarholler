@@ -204,7 +204,7 @@
     </div>
   {/if}
   <!-- due date -->
-  <div class="filed col-span-3 md:col-span-2">
+  <div class="field col-span-3 md:col-span-2">
     <label for="dueDate">Due Date</label>
     <input type="date" name="dueDate" min={today} required bind:value={invoice.dueDate} />
   </div>

@@ -17,3 +17,7 @@ export const addNewClient = (clientToAdd: Client) => {
     clients.update((prev: Client[]) => prev.map((cur:Client)=>cur.id === clientToUpdate.id ? clientToUpdate : cur));
     return clientToUpdate;
  }
+
+ export const getClientById = (id: string) => {
+    return data.clients.find((client)=> client.id === id)
+ }

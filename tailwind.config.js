@@ -16,7 +16,9 @@ export default {
         arrowLeftUp: "url('/images/arrow-left-up.svg')",
         chevronDown: "url('/images/chevron-down.svg')",
         thankYou: "url('/images/bg-thankYou.svg')",
-        error: "url('/images/bg-error.svg')"
+        error: "url('/images/bg-error.svg')",
+        auth: "url('/images/bg-auth.svg')"
+
       },
       backgroundPosition: {
         'right-center': '97% center'

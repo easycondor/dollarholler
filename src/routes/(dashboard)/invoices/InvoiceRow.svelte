@@ -1,5 +1,6 @@
 <script lang="ts">
   import { clickOutside } from '$lib/actions/ClickOutside';
+  import { swipe } from '$lib/actions/Swipe';
   import AdditionalOptions from '$lib/components/AdditionalOptions.svelte';
   import Tag from '$lib/components/Tag.svelte';
   import ThreeDots from '$lib/components/icons/ThreeDots.svelte';
@@ -59,6 +60,7 @@
 <div class="relative">
   <div
     class="invoice-table z-row relative invoice-row items-center bg-white py-3 lg:py-6 rounded-lg shadow-tableRow"
+    use:swipe
   >
     <div class="status"><Tag className="ml-auto lg:ml-0" label={getInvoiceLabel()} /></div>
     <div class="text-sm lg:text-lg dueDate">{convertDate(invoice.dueDate)}</div>

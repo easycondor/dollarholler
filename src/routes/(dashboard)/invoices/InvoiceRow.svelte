@@ -11,6 +11,7 @@
   import SlidePanel from '$lib/components/SlidePanel.svelte';
   import InvoiceForm from './InvoiceForm.svelte';
   import ConfirmDelete from '$lib/components/ConfirmDelete.svelte';
+  import Cancel from '$lib/components/icons/Cancel.svelte';
 
   export let invoice: Invoice;
 
@@ -54,37 +55,61 @@
   };
 </script>
 
-<div
-  class="invoice-table invoice-row items-center bg-white py-3 lg:py-6 rounded-lg shadow-tableRow"
->
-  <div class="status"><Tag className="ml-auto lg:ml-0" label={getInvoiceLabel()} /></div>
-  <div class="text-sm lg:text-lg dueDate">{convertDate(invoice.dueDate)}</div>
-  <div class="text-sm lg:text-lg invoiceNumber">{invoice.invoiceNumber}</div>
-  <div class="text-base lg:text-xl font-bold clientName whitespace-nowrap truncate">
-    {invoice.client.name}
+<div class="relative">
+  <div
+    class="invoice-table z-row relative invoice-row items-center bg-white py-3 lg:py-6 rounded-lg shadow-tableRow"
+  >
+    <div class="status"><Tag className="ml-auto lg:ml-0" label={getInvoiceLabel()} /></div>
+    <div class="text-sm lg:text-lg dueDate">{convertDate(invoice.dueDate)}</div>
+    <div class="text-sm lg:text-lg invoiceNumber">{invoice.invoiceNumber}</div>
+    <div class="text-base lg:text-xl font-bold clientName whitespace-nowrap truncate">
+      {invoice.client.name}
+    </div>
+    <div class="text-sm lg:text-lg font-mono font-bold amount text-right">
+      ${centsToDollars(invoiceTotal(invoice.lineItems, invoice.discount))}
+    </div>
+    <div class="text-sm lg:text-lg viewButton hidden lg:flex center">
+      <a href={`/invoices/${invoice.id}`} class="text-pastelPurple hover:text-daisyBush"><View /></a
+      >
+    </div>
+    <div class="text-lg center moreButton hidden lg:flex relative">
+      <button
+        class=" text-pastelPurple hover:text-daisyBush"
+        on:click={() => {
+          isAdditionalMenuShowing = !isAdditionalMenuShowing;
+        }}><ThreeDots /></button
+      >
+      {#if isAdditionalMenuShowing}
+        <AdditionalOptions
+          options={[
+            { label: 'Edit', icon: Edit, onClick: handleEdit, disabled: isOptionsDisabled },
+            { label: 'Delete', icon: Trash, onClick: handleDelete, disabled: false },
+            { label: 'Send', icon: Send, onClick: handleSendInvoice, disabled: isOptionsDisabled }
+          ]}
+        />
+      {/if}
+    </div>
   </div>
-  <div class="text-sm lg:text-lg font-mono font-bold amount text-right">
-    ${centsToDollars(invoiceTotal(invoice.lineItems, invoice.discount))}
-  </div>
-  <div class="text-sm lg:text-lg viewButton hidden lg:flex center">
-    <a href={`/invoices/${invoice.id}`} class="text-pastelPurple hover:text-daisyBush"><View /></a>
-  </div>
-  <div class="text-lg center moreButton hidden lg:flex relative">
-    <button
-      class=" text-pastelPurple hover:text-daisyBush"
-      on:click={() => {
-        isAdditionalMenuShowing = !isAdditionalMenuShowing;
-      }}><ThreeDots /></button
-    >
-    {#if isAdditionalMenuShowing}
-      <AdditionalOptions
-        options={[
-          { label: 'Edit', icon: Edit, onClick: handleEdit, disabled: isOptionsDisabled },
-          { label: 'Delete', icon: Trash, onClick: handleDelete, disabled: false },
-          { label: 'Send', icon: Send, onClick: handleSendInvoice, disabled: isOptionsDisabled }
-        ]}
-      />
+  <!-- swipe to reveal -->
+  <div class="flex w-full items-center justify-around absolute inset-0 h-full z-rowAction">
+    <button class="action-button">
+      <Cancel width={32} height={32} />
+    </button>
+    {#if !isOptionsDisabled}
+      <button class="action-button" on:click={handleEdit}>
+        <Edit width={32} height={32} />
+      </button>
+
+      <button class="action-button" on:click={handleSendInvoice}>
+        <Send width={32} height={32} />
+      </button>
     {/if}
+    <button class="action-button" on:click={handleDelete}>
+      <Trash width={32} height={32} />
+    </button>
+    <a href={`/invoices/${invoice.id}`} class="action-button" on:click={handleDelete}>
+      <View width={32} height={32} />
+    </a>
   </div>
 </div>
 
@@ -102,6 +127,10 @@
 {/if}
 
 <style lang="postcss">
+  .action-button {
+    @apply flex flex-col items-center justify-center font-bold text-daisyBush cursor-pointer;
+  }
+
   .invoice-row {
     grid-template-areas:
       'invoiceNumber invoiceNumber'

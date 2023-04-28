@@ -66,6 +66,8 @@ export default {
         overlay: 996,
         navBarToggle: 91,
         navBar: 90,
+        row:5,
+        rowAction:1
     }
   }
   },

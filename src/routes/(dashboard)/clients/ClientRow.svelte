@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { clickOutside } from '$lib/actions/ClickOutside';
   import AdditionalOptions from '$lib/components/AdditionalOptions.svelte';
   import Tag from '$lib/components/Tag.svelte';
   import Edit from '$lib/components/icons/Edit.svelte';
@@ -68,7 +69,12 @@
     <!-- lien vers invidual page -->
     <a href={`/clients/${client.id}`} class="text-pastelPurple hover:text-daisyBush"> <View /></a>
   </div>
-  <div class="threedots relative hidden lg:flex justify-center items-center">
+  <div
+    class="threedots relative hidden lg:flex justify-center items-center"
+    use:clickOutside={() => {
+      isAdditionalMenuShowing = false;
+    }}
+  >
     <button
       on:click={() => {
         isAdditionalMenuShowing = !isAdditionalMenuShowing;

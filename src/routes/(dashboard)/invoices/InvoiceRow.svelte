@@ -25,6 +25,8 @@
 
   let isInvoiceFormShowing: boolean = false;
 
+  let triggerReset = false;
+
   const handleDelete = () => {
     //console.log('delete');
     isModalShowing = true;
@@ -60,7 +62,10 @@
 <div class="relative">
   <div
     class="invoice-table z-row relative invoice-row items-center bg-white py-3 lg:py-6 rounded-lg shadow-tableRow"
-    use:swipe
+    use:swipe={{ triggerReset }}
+    on:outOfView={() => {
+      triggerReset = false;
+    }}
   >
     <div class="status"><Tag className="ml-auto lg:ml-0" label={getInvoiceLabel()} /></div>
     <div class="text-sm lg:text-lg dueDate">{convertDate(invoice.dueDate)}</div>
@@ -100,7 +105,12 @@
   </div>
   <!-- swipe to reveal -->
   <div class="flex w-full items-center justify-around absolute inset-0 h-full z-rowAction">
-    <button class="action-button">
+    <button
+      class="action-button"
+      on:click={() => {
+        triggerReset = true;
+      }}
+    >
       <Cancel width={32} height={32} />
     </button>
     {#if !isOptionsDisabled}

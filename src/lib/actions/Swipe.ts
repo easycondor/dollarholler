@@ -1,14 +1,19 @@
+import type { Action } from "svelte/action";
+
 import { spring } from "svelte/motion";
 
 interface SwipeProps {
-
+    triggerReset?:boolean;
 }
 
-export const swipe = (node:HTMLElement, params:SwipeProps) =>{
+export const swipe:Action<HTMLElement, SwipeProps> = (node, params) =>{
     
 let x:number;
 let startingX:number;
-const elementWidth = node.clientWidth; //largeur écran
+let elementWidth = node.clientWidth; //largeur écran
+
+let triggerReset = params?.triggerReset || false;//si existe sinon flase
+
 //physic animation stiffness and damping
 const coordinates = spring(
     {x:0,y:0},
@@ -27,7 +32,47 @@ coordinates.subscribe(($coords)=> {
 
 )
 
-    node.addEventListener('mousedown', handleMouseDown)
+//Swipe only on mobile < 1024
+function setupEventListener(){
+    if(isMobileBreakpoint()){
+        node.addEventListener('mousedown', handleMouseDown)
+        node.addEventListener('touchstart', handleTouchStart)
+    }else{
+        node.removeEventListener('mousedown', handleMouseDown)
+        node.removeEventListener('touchstart', handleTouchStart)
+    }
+
+    //update th card width
+    elementWidth=node.clientWidth;
+}
+
+setupEventListener();
+
+window.addEventListener("resize", ()=>{
+    setupEventListener();
+})
+
+    function isMobileBreakpoint(){
+        const mediaQuery = window.matchMedia("(max-width: 1024px)");
+        if(mediaQuery.matches){
+            return true;
+        }
+    }
+
+
+function resetCard() {
+    coordinates.update(()=>{
+        return { x : 0, y : 0 }
+    })
+    triggerReset=false;
+}
+
+//corrige le bug car cancel ne fonctionne qu'une seule fois
+function outOfView() {
+    node.dispatchEvent(
+        new CustomEvent('outOfView')
+    )
+}
 
     function handleMouseDown(event:MouseEvent){
         console.log('mousedown');
@@ -37,6 +82,16 @@ coordinates.subscribe(($coords)=> {
         window.addEventListener('mouseup', handleMouseUp);
     }
 
+    function handleTouchStart(event:TouchEvent){
+        console.log('mousedown');
+        x = event.touches[0].clientX;
+        startingX = event.touches[0].clientX;
+        window.addEventListener('touchmove', handleTouchMove);//a l'intérieur de l'event mousedown !! car appeler seulement si
+        window.addEventListener('touchend', handleTouchEnd);
+    }
+
+
+
     function handleMouseMove(event:MouseEvent){
         //console.log(`moving ${event.clientX} - ${event.clientY}`);
          //clientX donne la valeur selon la fenêtre et la différence position du click et la positon de la souris
@@ -44,16 +99,30 @@ coordinates.subscribe(($coords)=> {
          const dx = event.clientX - x;
          //console.log(`dx = ${dx}`);
          x = event.clientX;
-         coordinates.update(($coords => {
+         updateCoordinates(dx);
+         
+    }
+
+    function handleTouchMove(event:TouchEvent){
+        //calcul delta x
+       const dx = event.touches[0].clientX - x;
+       //reset x
+       x= event.touches[0].clientX;
+       //update coordinates
+       updateCoordinates(dx);
+         
+    }
+
+    function updateCoordinates(dx:number){
+        coordinates.update(($coords => {
             return {
                 x: $coords.x + dx,
                 y:0
             }
          } ))
-         
     }
 
-    function updateCoordinates(x){
+    function setXCoordinates(x:number){
         coordinates.update(()=>{ 
             return  {x:x,y:0}
         })
@@ -69,16 +138,25 @@ function moveCardOver(endingX:number){
     //swipe left over 20px
     if(movement > 20){
         x = leftSnapX
-        updateCoordinates(x);
+        setXCoordinates(x);
+        outOfView();
     }
 
     //swipe right
     if(movement < 20){
         x = rightSnapX;
-        updateCoordinates(x);
+        setXCoordinates(x);
     }
 
    
+}
+
+function handleTouchEnd(event:TouchEvent){
+    //console.log(`mouse Up`);
+    const endingX = event.changedTouches[0].clientX;
+    moveCardOver(endingX);//bouge l'el. jusqu'a un certain point
+    window.removeEventListener('touchmove', handleTouchMove);
+    window.removeEventListener('touchend', handleTouchEnd); 
 }
 
     function handleMouseUp(event:MouseEvent){
@@ -90,9 +168,14 @@ function moveCardOver(endingX:number){
     }
     
     return {
-        update(){},
+        update(newParams:SwipeProps){
+            if(newParams.triggerReset){
+                resetCard();
+            }
+        },
         destroy(){
             node.removeEventListener('mousedown', handleMouseDown)
+            node.removeEventListener('touchstart', handleTouchStart)
         
         }
     }

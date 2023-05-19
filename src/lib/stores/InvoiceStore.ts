@@ -1,10 +1,26 @@
+import superbase from "$lib/utils/superbase";
 import { writable } from "svelte/store";
-import data from "../../seed.json"
+//import data from "../../seed.json" //seulement avec seed.json not superbase
+
 
 export const invoices = writable<Invoice[]>([]);
 
-export const loadInvoices = () => {
-   invoices.set(data.invoices)
+export const loadInvoices = async () => {
+   //code from api superbase
+
+const { data, error } = await superbase
+.from('invoice')
+.select('*, client(id, name), lineItems(*)')
+
+//console.log(data);
+
+if(error) {
+   console.error(error);
+   return
+   
+}
+   //
+   invoices.set(data as Invoice[])
    // invoices.set([])
 }
 
@@ -30,7 +46,21 @@ export const updateInvoice =  (invoiceToUpdate: Invoice) => {
    return invoiceToUpdate;
 }
 
-export const getInvoiceById = (id:string) =>{
-   return data.invoices.find(invoice => invoice.id === id)
+export const getInvoiceById = async (id:string) =>{
+   //from superbase
+   const { data, error } = await superbase
+   .from('invoice')
+   .select('*, client(id, name), lineItems(*)')
+   .eq('id', id)
+
+   if(error){
+      console.error(error);
+      return
+   }
+
+   if(data && data[0]) return data[0] as Invoice;
+   console.warn('cannot find invoice id'+id);
+   
+   //return data.invoices.find(invoice => invoice.id === id)
 }
 

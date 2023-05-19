@@ -104,7 +104,7 @@
     </div>
   </div>
   <!-- swipe to reveal -->
-  <div class="flex w-full items-center justify-around absolute inset-0 h-full z-rowAction">
+  <div class="swipe-revealed-action">
     <button
       class="action-button"
       on:click={() => {

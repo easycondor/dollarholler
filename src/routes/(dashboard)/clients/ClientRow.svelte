@@ -35,9 +35,9 @@
   };
 
   const receivedInvoices = () => {
-    if (client?.invoices) {
+    if (client?.invoice) {
       //find the invoices that have been paid
-      const paidInvoices = client.invoices.filter((invoice) => invoice.invoiceStatus === 'paid');
+      const paidInvoices = client.invoice.filter((invoice) => invoice.invoiceStatus === 'paid');
       // get the sum
       return sumInvoices(paidInvoices);
     } else {
@@ -46,9 +46,9 @@
   };
 
   const balanceInvoices = () => {
-    if (client?.invoices) {
+    if (client?.invoice) {
       //find the invoices that haveNOT been paid
-      const paidInvoices = client.invoices.filter((invoice) => invoice.invoiceStatus !== 'paid');
+      const paidInvoices = client.invoice.filter((invoice) => invoice.invoiceStatus !== 'paid');
       // get the sum
       return sumInvoices(paidInvoices);
     } else {

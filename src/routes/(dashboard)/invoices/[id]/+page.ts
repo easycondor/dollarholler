@@ -9,7 +9,7 @@ interface Props {
 }
 
 
-export async function load( {params} ):Props{
+export async function load( {params} ):Promise<Props>{
     //params.id = url pass dynamic [id] folder
     const id = params?.id;
     //
